@@ -3,12 +3,12 @@ CarMPD
 
 **Not Ready To Use, its still under heavy development**
 
-Build up a headless mpd server with a webclient (accessible via wireless lan) and a hardware control panel out-of-the-box onto your raspberry pi.
+Build up a headless out-of-the-box mpd server with a webclient (accessible via wireless lan) and a hardware control panel onto your raspberry pi.
 
 Features
 --------
 * Out-of-the-box, just fire up one line and you have all the features
-* AccessPoint, if you have a AP-supported wireless dongle, you can control mpd over the air
+* AccessPoint, if you have an AP-supported wireless dongle, you can control mpd over the air
 * Control mpd with some pushbuttons (GPIO)
 * Easily upload your songs (not implemented yet)
 
