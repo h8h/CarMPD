@@ -10,17 +10,17 @@ source setup/functions.sh # load the functions
 pac_man dialog mpd
 
 message_box "CarMPD Installation" \
-			"Hello and thanks for using carMPD\n
-			Let's go!"
+"Hello and thanks for using carMPD\n
+Let's go!"
 
 ask_box "Accesspoint" \
-		"Would you like to use a wireless accesspoint?\n\n
-		Yes? Please plug-in your dongle and enter 'yes'" \
-		AP
+"Would you like to use a wireless accesspoint?\n\n
+Yes? Please plug-in your dongle and enter <Yes>" \
+AP
 
 if [ "$AP" ]; then
 	# Check if the dongle supports AP
-	pac_man iw
+    pac_man iw
 	ap_support=`iw list | grep "\* AP$"`
 	if [ -z "$ap_support" ]; then
 		message_box "Can't install Accesspoint" \

@@ -1,7 +1,7 @@
 CarMPD
 =============
 
-**Not Ready To Use, its still under heavy development**
+**Not Ready To Use! It's still under heavy development**
 
 Build up a headless out-of-the-box mpd server with a webclient (accessible via wireless lan) and a hardware control panel onto your raspberry pi.
 
@@ -16,6 +16,6 @@ Installation
 ------------
 Connect to your raspberry pi (i.e via ssh) and fire up the following line
 ```
-curl https://github.com/h8h/carMPD/bootstrap.sh | sudo bash
+curl https://raw.githubusercontent.com/h8h/carMPD/master/bootstrap.sh | sudo bash
 ```
 After some questions, you're ready to fill your raspberry pi with your favourite songs and start listening. Have fun!
