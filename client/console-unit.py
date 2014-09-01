@@ -101,11 +101,11 @@ client.connect("localhost", 6600)
 
 try:
 	while True:
+		time.sleep(55)
 		try:
 			client.ping()
 		except mpd.ConnectionError:
 			client.connect("localhost", 6600)
-			time.sleep(55)
 
 except KeyboardInterrupt:
 	pass
