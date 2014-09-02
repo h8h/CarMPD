@@ -1,6 +1,6 @@
-#!/bin/bash
 # Setup Github:oblique:create_ap 
-cd /home/$mpduser/
+
+cd $temp_dir
 wlan_dev=$1
 
 if [ -z "wlan_dev" ]; then
@@ -63,5 +63,4 @@ EOF
 systemctl enable create_ap.service
 systemctl start  create_ap.service
 
-echo "WD = $WD"
-cd $WD
+cd $working_dir

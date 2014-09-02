@@ -19,14 +19,7 @@ message_box "CarMPD Installation" \
 "Hello and thanks for using carMPD\n
 Let's go!"
 
-# Creates the mpd main user and its storage root to place all config files
-useradd --user-group --create-home $mpduser
-
-if [ ! -d "/home/$mpduser/" ]; then
-	message_box "Error creating new user" \
-"The user $mpduser wasn't created"
-	exit
-fi
+. setup/mpd.sh
 
 ask_box "Accesspoint" \
 "Would you like to use a wireless accesspoint?\n\n
@@ -62,6 +55,6 @@ you would like to use as an Accesspoint" \
 
 		. setup/accesspoint.sh $selected_dev
 		. setup/ympd.sh
-		
+
 	fi
 fi

@@ -1,6 +1,5 @@
-#!/bin/bash
 # Setup Github:notandy:ympd
-cd /home/$mpduser/
+cd $temp_dir
 
 if [ -z "$TAG" ]; then
 	TAG=v1.2.2
@@ -21,26 +20,13 @@ if [ ! -d ympd ]; then
 	as_user	"cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr"
 	as_user "make"
 	make install 
+	cd ..
+	# Let the mpd user own the process
+	sed -i '/^ExecStart/ s/$/ --user mpd/' contrib/ympd.service
+	mv contrib/ympd.service /usr/lib/systemd/system
 fi
-
-cat > /usr/lib/systemd/system/ympd.service << EOF;
-[Unit]
-	Description=ympd server daemon
-	Requires=network.target local-fs.target
-[Service]
-	Environment=MPD_HOST=localhost
-	Environment=MPD_PORT=6600
-	Environment=WEB_PORT=80
-	EnvironmentFile=-/home/$mpduser/.config/ympd
-	ExecStart=/usr/bin/ympd -h \$MPD_HOST -p \$MPD_PORT -w \$WEB_PORT
-	Type=simple
-	User=$mpduser
-	Group=$mpduser
-[Install]
-	WantedBy=multi-user.target
-EOF
 
 systemctl enable ympd.service
 systemctl start  ympd.service
 
-cd
+cd $WD
