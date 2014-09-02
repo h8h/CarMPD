@@ -24,21 +24,20 @@ useradd --user-group --create-home $mpduser
 
 if [ ! -d "/home/$mpduser/" ]; then
 	message_box "Error creating new user" \
-"The user mpduser wasn't created"
+"The user $mpduser wasn't created"
 	exit
 fi
-
-
 
 ask_box "Accesspoint" \
 "Would you like to use a wireless accesspoint?\n\n
 Yes? Please plug-in your dongle and enter <Yes>" \
 AP
 
+# Check if the dongle supports AP
 if [ $AP -eq 0 ]; then
-	# Check if the dongle supports AP
-    pac_man iw
+    pac_man pwgen iw
 
+    # Get all wireless network devices
     devs=`iw dev | sed -n "s/^\t*Interface[[:space:]]\(w.*\)/\1/p"`
     supported_devs=""
 	
@@ -47,15 +46,21 @@ if [ $AP -eq 0 ]; then
 		ap_support=`iw phy\#$wiphy info | grep "\* AP$"`
 		
 		if [ -n "$ap_support" ]; then
-			supported_devs="$supported_devs$dev\n"
+			supported_devs="$supported_devs$dev - off\\"
 		fi
 	done
 
-	#if [ -z "$ap_support" ]; then
-	#	message_box "Can't install Accesspoint" \
-	#	"Sorry, your dongle doesn't support AP."
-	#else
-	. setup/accesspoint.sh
-	#. setup/ympd.sh
-	#fi
+	echo "$supported_devs"
+	if [ -z "$supported_devs" ]; then
+		message_box "Can't install Accesspoint" \
+		"Sorry, your dongle doesn't support AP."
+	else
+		input_radio "Select a network device" \
+		"Please select a network device\n
+you would like to use as an Accesspoint" \
+		"$supported_devs" \
+		selected_dev
+		. setup/accesspoint.sh $selected_dev
+		#. setup/ympd.sh
+	fi
 fi

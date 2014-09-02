@@ -1,22 +1,48 @@
 #!/bin/bash
 # Setup Github:oblique:create_ap 
-
-echo $mpduser
-
 cd /home/$mpduser/
+wlan_dev=$1
 
-git clone https://github.com/oblique/create_ap
+if [ -z "wlan_dev" ]; then
+	# no ap-supported network device
+	exit
+fi
 
-chown -R $mpduser:$mpduser create_ap
+# Build create_ap
+if [ ! -d create_ap ]; then
+	git clone https://github.com/oblique/create_ap
+	chown -R $mpduser:$mpduser create_ap
+	cd create_ap
+	make install
+fi
 
 input_box "Accesspoint - SSID" \
-"Name your accesspoint (SSID)" \
+"Name your Accesspoint (SSID)" \
 "carMPD" \
 SSID
 
 if [ -z "$SSID" ]; then
-	AP="carMPD"
+	# user hit ESC/cancel
+	exit
 fi
+
+pass_phrase=""
+
+while ! [[ "${#pass_phrase}" -ge 8 && "${#pass_phrase}" -le 63 ]]; do
+	sample_key=`pwgen 12 1`
+	input_box "Passphrase" \
+	"Enter wpa security key for your new $SSID - SSID" \
+	$sample_key \
+	pass_phrase
+
+	if [ -z "$pass_phrase" ]; then
+		# user hit ESC/cancel
+		exit
+	fi
+
+done
+
+pac_man dnsmasq hostapd haveged
 
 cat > /usr/lib/systemd/system/create_ap.service << EOF;
 [Unit]
@@ -25,7 +51,7 @@ cat > /usr/lib/systemd/system/create_ap.service << EOF;
 
 [Service]
 	Type=simple
-	ExecStart=/usr/bin/create_ap -n -g 10.0.0.1 $wlan_dev $SSID
+	ExecStart=/usr/bin/create_ap -n -g 10.0.0.1 $wlan_dev $SSID $pass_phrase
 	KillSignal=SIGINT
 	Restart=on-failure
 	RestartSec=5
