@@ -1,12 +1,17 @@
-mpduser="mpduser"
+declare -r mpduser="mpduser"
+declare -r WD=`pwd`
+
+function as_user {
+	su -c "$@" $mpduser
+}
 
 function pac_man {
 	# Install all given packages via pacman
-	pacman -Sy --noconfirm --quiet $@
+	pacman -S --needed --noconfirm --quiet $@
 }
 
-## Dialog Functions ##
 function message_box {
+	## Dialog Functions ##
 	dialog --title "$1" --msgbox "$2" 0 0
 }
 

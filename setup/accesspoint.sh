@@ -10,7 +10,7 @@ fi
 
 # Build create_ap
 if [ ! -d create_ap ]; then
-	git clone https://github.com/oblique/create_ap
+	git clone -q https://github.com/oblique/create_ap
 	chown -R $mpduser:$mpduser create_ap
 	cd create_ap
 	make install
@@ -61,6 +61,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable create_ap.service
-systemctl start create_ap.service
+systemctl start  create_ap.service
 
-cd
+echo "WD = $WD"
+cd $WD
