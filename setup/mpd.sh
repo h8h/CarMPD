@@ -8,7 +8,7 @@ chmod u+x -R /mnt/music
 
 mount -a
 
-mkdir --parents .config/mpd/
+mkdir --parents .config/mpd/playlists
 chown -R $mpduser:$mpduser .config/mpd
 
 # Change mpd user
