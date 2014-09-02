@@ -20,8 +20,8 @@ if [ ! -d carMPD ]; then
 	echo Downloading carMPD . . .
 	pacman -Sy --noconfirm --quiet git
 	git clone -q https://github.com/h8h/carMPD
-	cd carMPD
 fi
 
 # Start setup script.
+cd carMPD
 setup/start.sh

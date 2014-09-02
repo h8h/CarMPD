@@ -1,6 +1,5 @@
-declare -r mpduser="mpd"
+declare -r mpduser="mpduser"
 declare -r working_dir=`pwd`
-declare -r temp_dir=`mktemp -d`
 
 function as_user {
 	su -c "$@" $mpduser

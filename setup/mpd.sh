@@ -1,15 +1,22 @@
 # Setup MPD 
+cd /home/$mpduser
 
-mkdir /var/lib/mpd/music
-echo "/mnt/music /var/lib/mpd/music none bind" >> /etc/fstab
-
-chown -R $mpduser:$mpduser /var/lib/mpd
+mkdir music
+echo "/mnt/music /home/$mpduser/music none bind" >> /etc/fstab
 
 chmod u+x -R /mnt/music
 
 mount -a
 
-cp conf/mpd.conf /etc/mpd.conf
+mkdir --parents .config/mpd/
+chown -R $mpduser:$mpduser .config/mpd
+
+# Change mpd user
+sed -i "s/\${MPDUSR}/$mpduser/g" $working_dir/conf/mpd.conf
+
+cp $working_dir/conf/mpd.conf .config/mpd/mpd.conf
 
 systemctl enable mpd.service
 systemctl start  mpd.service
+
+cd $working_dir

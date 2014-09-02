@@ -1,5 +1,5 @@
 # Setup Github:notandy:ympd
-cd $temp_dir
+cd /home/$mpduser/ 
 
 if [ -z "$TAG" ]; then
 	TAG=v1.2.2
@@ -10,12 +10,14 @@ pac_man gcc cmake
 # Build create_ap
 if [ ! -d ympd ]; then
 	git clone -q https://github.com/notandy/ympd
-	chown -R $mpduser:$mpduser ympd
 	cd ympd 
 	git checkout -q $TAG
 	
 	# Build
-	as_user "mkdir build"
+	mkdir build
+
+	chown -R $mpduser:$mpduser ../ympd 
+	
 	cd build
 	as_user	"cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr"
 	as_user "make"
@@ -29,4 +31,4 @@ fi
 systemctl enable ympd.service
 systemctl start  ympd.service
 
-cd $WD
+cd $working_dir

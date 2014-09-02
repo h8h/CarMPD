@@ -1,6 +1,5 @@
 # Setup Github:oblique:create_ap 
-
-cd $temp_dir
+cd /home/$mpduser 
 wlan_dev=$1
 
 if [ -z "wlan_dev" ]; then

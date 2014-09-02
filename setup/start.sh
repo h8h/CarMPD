@@ -15,6 +15,15 @@ fi
 # Furthermore install the mpd server.
 pac_man dialog mpd
 
+# Creates the mpd main user and its storage root to place all config files
+useradd --user-group --create-home $mpduser
+
+if [ ! -d "/home/$mpduser/" ]; then
+	message_box "Error creating new user" \
+"The user $mpduser wasn't created"
+	exit
+fi
+
 message_box "CarMPD Installation" \
 "Hello and thanks for using carMPD\n
 Let's go!"
