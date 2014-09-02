@@ -8,6 +8,8 @@ if [ -z "wlan_dev" ]; then
 	exit
 fi
 
+pac_man make dnsmasq hostapd haveged
+
 # Build create_ap
 if [ ! -d create_ap ]; then
 	git clone -q https://github.com/oblique/create_ap
@@ -41,8 +43,6 @@ while ! [[ "${#pass_phrase}" -ge 8 && "${#pass_phrase}" -le 63 ]]; do
 	fi
 
 done
-
-pac_man dnsmasq hostapd haveged
 
 cat > /usr/lib/systemd/system/create_ap.service << EOF;
 [Unit]

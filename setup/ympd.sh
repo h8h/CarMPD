@@ -5,7 +5,7 @@ if [ -z "$TAG" ]; then
 	TAG=v1.2.2
 fi
 
-pac_man cmake
+pac_man gcc cmake
 
 # Build create_ap
 if [ ! -d ympd ]; then
