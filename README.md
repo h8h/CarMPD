@@ -22,13 +22,13 @@ After some questions, you're ready to fill your raspberry pi with your favourite
 
 Operating System Image
 ----------------------
-You need (*Arch Linux*)[http://www.raspberrypi.org/downloads/] as Operating System image. I use it because its a lightweight linux distribution and it boots fast. 
+You need [*Arch Linux*](http://www.raspberrypi.org/downloads/) as Operating System image. I use it because its a lightweight linux distribution and it boots fast. 
 
 For all raspbian fans I will provide a setup branch for raspbian soon. 
 
 Why MPD?!
 ---------
-Well yeah, why not using (Mopidy)[http://www.mopidy.com/]? I have not much experience in using Mopidy but I think Spotify, SoundCloud or Google Play Music is useless in a car without access to the internet.
+Well yeah, why not using [Mopidy](http://www.mopidy.com/)? I have not much experience in using Mopidy but I think Spotify, SoundCloud or Google Play Music is useless in a car without access to the internet.
 
 Bugs or improvement suggestions?
 --------------------------------
