@@ -20,8 +20,7 @@ message_box "Welcome" \
 Let's go!"
 
 # Creates the mpd main user and its storage root to place all config files
-useradd --user-group --create-home $MPD_USER
-gpasswd -a $MPD_USER audio power
+useradd --user-group --create-home --groups power audio $MPD_USER
 
 if [ ! -d "/home/$MPD_USER/" ]; then
     message_box "Error creating new user" \

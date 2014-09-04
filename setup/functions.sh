@@ -81,6 +81,6 @@ function get_systemd_status {
         exit
     else
         message_box "$1 - Success" \
-        "$1 is running, now we can go on ..."
+        "$1 is running, now we can go on"
     fi
 }

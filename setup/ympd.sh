@@ -10,14 +10,13 @@ pac_man gcc cmake
 # Build create_ap
 if [ ! -d ympd ]; then
     git clone -q https://github.com/notandy/ympd
-    cd ympd
 fi
 
+cd ympd
 git checkout -q $TAG
 
 # Build
 mkdir build
-
 chown -R $MPD_USER:$MPD_USER ../ympd 
 
 cd build
@@ -35,10 +34,10 @@ if [ -e "$YMPD_SERVICE" ]; then
     # Remember to restart the service if you change something
     # systemctl restart ympd.service
     # Have a nice ♪ day :)
-    MPD_HOST=localhost
-    MPD_PORT=6600
-    WEB_PORT=80
-    EOF
+MPD_HOST=localhost
+MPD_PORT=6600
+WEB_PORT=80
+EOF
 
     # Let the MPDUSER user own the process
     sed -i "/^ExecStart/ s/$/ --user $MPD_USER/" $YMPD_SERVICE
