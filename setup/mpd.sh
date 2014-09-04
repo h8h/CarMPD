@@ -1,5 +1,5 @@
 # Setup MPD 
-log_exec echo "--------- BEGIN MPD installation process ---------"
+begin_section MPD
 
 log_exec pac_man mpd mpc udevil
 
@@ -7,23 +7,25 @@ systemctl enable "devmon@$MPD_USER.service"
 log_exec systemctl start  "devmon@$MPD_USER.service"
 
 cd /home/$MPD_USER
+
+mkdir playlists
 mkdir --parents music/{internal,media}
-mkdir --parents .config/mpd/playlists
-chown -R $MPD_USER:$MPD_USER .config/mpd
 
 echo "/run/media/$MPD_USER /home/$MPD_USER/music/media none bind" >> /etc/fstab
 mount -a
 
 # Change mpd user
 sed -i "s/\${MPDUSR}/$MPD_USER/g" $WORKING_DIR/conf/mpd.conf
+cp $WORKING_DIR/conf/mpd.conf $CONFIG_FOLDER/mpd.conf
 
-cp $WORKING_DIR/conf/mpd.conf .config/mpd/mpd.conf
+# Append the mpd config file to the mpd process
+sed "/^ExecStart/ s|$| $CONFIG_FOLDER/mpd.conf|" /usr/lib/systemd/system/mpd.service
 
-systemctl enable mpd.service
+systemctl          enable mpd.service
 log_exec systemctl start  mpd.service
 
 log_exec mpc update
 
-log_exec echo "--------- END   MPD installation process ---------"
+end_section MPD
 
 cd $WORKING_DIR

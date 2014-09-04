@@ -32,7 +32,7 @@ fi
 touch $INSTALLATION_LOG_FILE
 
 # Setup the general carMPD configs folder
-mkdir --parents .config/carMPD
+mkdir --parents $CONFIG_FOLDER
 
 # Install MPD
 . setup/mpd.sh

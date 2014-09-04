@@ -7,7 +7,7 @@ if [ -z "$DEV" ]; then
     exit
 fi
 
-log_exec echo "--------- BEGIN Accesspoint installation process ---------"
+begin_section Accesspoint
 
 log_exec pac_man make dnsmasq hostapd haveged
 
@@ -44,7 +44,7 @@ while ! [[ "${#PASSPHRASE}" -ge 8 && "${#PASSPHRASE}" -le 63 ]]; do
 
 done
 
-CREATEAP_ENV_FILE=/home/$MPD_USER/.config/carMPD/create_ap.env
+CREATEAP_ENV_FILE=$CONFIG_FOLDER/create_ap.env
 
 cat > $CREATEAP_ENV_FILE << EOF;
 # Accesspoint configuration file
@@ -77,6 +77,6 @@ EOF
 systemctl enable create_ap.service
 log_exec systemctl start  create_ap.service
 
-log_exec echo "--------- END   Accesspoint installation process ---------"
+end_section Accesspoint
 
 cd $WORKING_DIR

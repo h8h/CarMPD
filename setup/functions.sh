@@ -1,7 +1,8 @@
 declare -r MPD_USER="mpduser"
 declare -r WORKING_DIR=`pwd`
 declare -r CAR_MPD="carMPD"
-declare -r INSTALLATION_LOG_FILE="/home/$MPD_USER/install_log"
+declare -r CONFIG_FOLDER="/home/$MPD_USER/.config/carMPD"
+declare -r INSTALLATION_LOG_FILE="/home/$MPD_USER/carMPD_install.log"
 
 function as_user {
     su -c "$@" $MPD_USER
@@ -88,5 +89,17 @@ function get_systemd_status {
 }
 
 function log_exec {
-    "$@" >> $INSTALLATION_LOG_FILE 2>&1
+    "$@" > >(tee $INSTALLATION_LOG_FILE.info) 2> >(tee $INSTALLATION_LOG_FILE.err >&2)
+}
+
+function begin_section {
+    OUT="--------- BEGIN $1 installation process ---------"
+    log_exec echo $OUT
+    log_exec echo $OUT 1>&2;
+}
+
+function end_section {
+    OUT="--------- END   $1 installation process ---------"
+    log_exec echo $OUT
+    log_exec echo $OUT 1>&2;
 }

@@ -5,7 +5,7 @@ if [ -z "$TAG" ]; then
     TAG=v1.2.2
 fi
 
-log_exec echo "--------- BEGIN YMPD installation process ---------"
+begin_section YMPD
 
 log_exec pac_man gcc cmake
 
@@ -54,6 +54,6 @@ EOF
 
 fi
 
-log_exec echo "--------- END   YMPD installation process ---------"
+end_section YMPD
 
 cd $WORKING_DIR
