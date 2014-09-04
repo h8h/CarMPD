@@ -1,5 +1,5 @@
 #!/bin/bash
-# This is the entry point for install carMPD.
+# This is the entry point for install CarMPD.
 #####################################################
 
 source setup/functions.sh # load the functions
@@ -16,7 +16,7 @@ fi
 pac_man dialog
 
 message_box "Welcome" \
-"Hello and thanks for using carMPD\n
+"Hello and thanks for using CarMPD\n
 Let's go!"
 
 # Creates the mpd main user and its storage root to place all config files
@@ -29,9 +29,10 @@ if [ ! -d "/home/$MPD_USER/" ]; then
 fi
 
 # Creates the installation log
-touch $INSTALLATION_LOG_FILE
+touch $INSTALLATION_LOG_FILE.info
+touch $INSTALLATION_LOG_FILE.err
 
-# Setup the general carMPD configs folder
+# Setup the general CarMPD configs folder
 mkdir --parents $CONFIG_FOLDER
 
 # Install MPD

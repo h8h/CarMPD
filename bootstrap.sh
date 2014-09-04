@@ -15,13 +15,13 @@ fi
 # Go to root's home directory.
 cd
 
-# Clone the carMPD repository if it doesn't exist.
-if [ ! -d carMPD ]; then
-	echo Downloading carMPD . . .
-	pacman -Sy --noconfirm --quiet git
-	git clone -q https://github.com/h8h/carMPD
+# Clone the CarMPD repository if it doesn't exist.
+if [ ! -d CarMPD ]; then
+	echo Downloading CarMPD . . .
+	pacman -Sy --needed --noconfirm --quiet git
+	git clone -q https://github.com/h8h/CarMPD
 fi
 
 # Start setup script.
-cd carMPD
+cd CarMPD
 setup/start.sh

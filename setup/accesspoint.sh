@@ -22,7 +22,7 @@ make install
 
 input_box "Accesspoint - SSID" \
 "Name your Accesspoint (SSID)" \
-"carMPD" \
+"CarMPD" \
 SSID
 
 if [ -z "$SSID" ]; then
@@ -59,7 +59,7 @@ EOF
 
 cat > /usr/lib/systemd/system/create_ap.service << EOF;
 [Unit]
-    Description=carMPD AP Service
+    Description=CarMPD AP Service
     After=network.target
 
 [Service]

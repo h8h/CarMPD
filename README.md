@@ -14,7 +14,7 @@ Installation
 ------------
 Connect to your raspberry pi (i.e via ssh) and fire up the following line
 ```
-curl https://raw.githubusercontent.com/h8h/carMPD/master/bootstrap.sh | su -c "bash -"
+curl https://raw.githubusercontent.com/h8h/CarMPD/master/bootstrap.sh | su -c "bash -"
 ```
 After some questions, you're ready to fill your raspberry pi with your favourite songs and start listening. Have fun!
 

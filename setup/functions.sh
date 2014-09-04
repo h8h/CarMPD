@@ -1,8 +1,8 @@
 declare -r MPD_USER="mpduser"
 declare -r WORKING_DIR=`pwd`
-declare -r CAR_MPD="carMPD"
-declare -r CONFIG_FOLDER="/home/$MPD_USER/.config/carMPD"
-declare -r INSTALLATION_LOG_FILE="/home/$MPD_USER/carMPD_install.log"
+declare -r CAR_MPD="CarMPD"
+declare -r CONFIG_FOLDER="/home/$MPD_USER/.config/CarMPD"
+declare -r INSTALLATION_LOG_FILE="/home/$MPD_USER/CarMPD_install.log"
 
 function as_user {
     su -c "$@" $MPD_USER
@@ -94,12 +94,12 @@ function log_exec {
 
 function begin_section {
     OUT="--------- BEGIN $1 installation process ---------"
-    log_exec echo $OUT
-    log_exec echo $OUT 1>&2;
+    echo $OUT >> $INSTALLATION_LOG_FILE.info
+    echo $OUT 1>&2 2> $INSTALLATION_LOG_FILE.err
 }
 
 function end_section {
     OUT="--------- END   $1 installation process ---------"
-    log_exec echo $OUT
-    log_exec echo $OUT 1>&2;
+    echo $OUT >> $INSTALLATION_LOG_FILE.info
+    echo $OUT 1>&2 2> $INSTALLATION_LOG_FILE.err
 }
