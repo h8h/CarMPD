@@ -5,7 +5,9 @@ if [ -z "$TAG" ]; then
     TAG=v1.2.2
 fi
 
-pac_man gcc cmake
+log_exec echo "--------- BEGIN YMPD installation process ---------"
+
+log_exec pac_man gcc cmake
 
 # Build create_ap
 if [ ! -d ympd ]; then
@@ -20,8 +22,8 @@ mkdir build
 chown -R $MPD_USER:$MPD_USER ../ympd 
 
 cd build
-as_user "cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr"
-as_user "make"
+log_exec as_user "cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr"
+log_exec as_user "make"
 make install 
 cd ..
 
@@ -48,8 +50,10 @@ EOF
     mv $YMPD_SERVICE /usr/lib/systemd/system
 
     systemctl enable ympd.service
-    systemctl start  ympd.service
+    log_exec systemctl start  ympd.service
 
 fi
+
+log_exec echo "--------- END YMPD installation process ---------"
 
 cd $WORKING_DIR

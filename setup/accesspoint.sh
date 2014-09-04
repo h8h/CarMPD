@@ -7,11 +7,13 @@ if [ -z "$DEV" ]; then
     exit
 fi
 
-pac_man make dnsmasq hostapd haveged
+log_exec echo "--------- BEGIN Accesspoint installation process ---------"
+
+log_exec pac_man make dnsmasq hostapd haveged
 
 # Build create_ap
 if [ ! -d create_ap ]; then
-    git clone -q https://github.com/oblique/create_ap
+    log_exec git clone -q https://github.com/oblique/create_ap
     chown -R $MPD_USER:$MPD_USER create_ap
 fi
 
@@ -73,6 +75,8 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable create_ap.service
-systemctl start  create_ap.service
+log_exec systemctl start  create_ap.service
+
+log_exec echo "--------- END Accesspoint installation process ---------"
 
 cd $WORKING_DIR

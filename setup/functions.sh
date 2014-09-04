@@ -1,6 +1,7 @@
 declare -r MPD_USER="mpduser"
 declare -r WORKING_DIR=`pwd`
 declare -r CAR_MPD="carMPD"
+declare -r INSTALLATION_LOG_FILE="/home/$MPD_USER/install_log"
 
 function as_user {
     su -c "$@" $MPD_USER
@@ -74,4 +75,8 @@ function get_systemd_status {
         message_box "$1 - Success" \
         "$1 is running, now we can go on"
     fi
+}
+
+function log_exec {
+    $@ >> $INSTALLATION_LOG_FILE 2>&1
 }
