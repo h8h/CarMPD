@@ -1,8 +1,6 @@
 CarMPD
 ======
 
-**Not Ready To Use! It's still under heavy development**
-
 Build up a headless out-of-the-box mpd server with a webclient (accessible via wireless lan) and a hardware control panel onto your raspberry pi.
 
 Features
@@ -16,7 +14,7 @@ Installation
 ------------
 Connect to your raspberry pi (i.e via ssh) and fire up the following line
 ```
-curl https://raw.githubusercontent.com/h8h/carMPD/master/bootstrap.sh | sudo bash
+curl https://raw.githubusercontent.com/h8h/carMPD/master/bootstrap.sh | su -c "bash -"
 ```
 After some questions, you're ready to fill your raspberry pi with your favourite songs and start listening. Have fun!
 
@@ -25,6 +23,11 @@ Operating System Image
 You need [*Arch Linux*](http://www.raspberrypi.org/downloads/) as Operating System image. I use it because its a lightweight linux distribution and it boots fast. 
 
 For all raspbian fans I will provide a setup branch for raspbian soon. 
+
+I would like to say big thanks to
+----------------------------------
+* @oblique for [create_ap](https://github.com/oblique/create_ap) a script that easily creates an access point (AP) - FreeBSD.
+* @notandy for [ympd](https://github.com/notandy/ympd) a standalone MPD Web GUI written in C - GPLv2.
 
 Why MPD?!
 ---------

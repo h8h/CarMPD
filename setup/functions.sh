@@ -88,5 +88,5 @@ function get_systemd_status {
 }
 
 function log_exec {
-    $@ >> $INSTALLATION_LOG_FILE 2>&1
+    "$@" >> $INSTALLATION_LOG_FILE 2>&1
 }
