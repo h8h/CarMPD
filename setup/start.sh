@@ -6,8 +6,8 @@ source setup/functions.sh # load the functions
 
 # Are we running as root?
 if [[ $EUID -ne 0 ]]; then
-	echo "This script must be run as root. Did you leave out sudo?"
-	exit
+    echo "This script must be run as root. Did you leave out sudo?"
+    exit
 fi
 
 # First of all install `dialog` to ask the user questions even if stdin has been redirected,
@@ -24,9 +24,9 @@ useradd --user-group --create-home $MPD_USER
 gpasswd -a $MPD_USER audio power
 
 if [ ! -d "/home/$MPD_USER/" ]; then
-	message_box "Error creating new user" \
+    message_box "Error creating new user" \
 "The user $MPD_USER couldn't be created"
-	exit
+    exit
 fi
 
 # Setup the general carMPD configs folder
@@ -46,21 +46,21 @@ AP
 if [ $AP -eq 0 ]; then
     pac_man pwgen iw
 
- 	get_supported_devices supported_devs
+    get_supported_devices supported_devs
 
-	if [ -z "$supported_devs" ]; then
-		message_box "Can't install Accesspoint" \
-		"Sorry, your dongle doesn't support AP."
-	else
-		input_radio "Select a network device" \
-		"Please select a network device\n
+    if [ -z "$supported_devs" ]; then
+        message_box "Can't install Accesspoint" \
+        "Sorry, your dongle doesn't support AP."
+    else
+        input_radio "Select a network device" \
+        "Please select a network device\n
 you would like to use as an Accesspoint" \
-		"$supported_devs" \
-		SELECTED_DEV
+        "$supported_devs" \
+        SELECTED_DEV
 
-		. setup/accesspoint.sh $SELECTED_DEV
-		get_systemd_status create_ap
-	fi
+        . setup/accesspoint.sh $SELECTED_DEV
+        get_systemd_status create_ap
+    fi
 fi
 
 # Install MPD Web GUI
@@ -70,6 +70,6 @@ ympd is a standalone MPD Web GUI written in C, utilizing Websockets and Bootstra
 WEB_GUI
 
 if [ $WEB_GUI -eq 0 ]; then
-	. setup/ympd.sh
-	get_systemd_status ympd
+    . setup/ympd.sh
+    get_systemd_status ympd
 fi

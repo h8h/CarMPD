@@ -3,16 +3,16 @@ cd /home/$MPD_USER
 DEV=$1
 
 if [ -z "$DEV" ]; then
-	# no ap-supported network device
-	exit
+    # no ap-supported network device
+    exit
 fi
 
 pac_man make dnsmasq hostapd haveged
 
 # Build create_ap
 if [ ! -d create_ap ]; then
-	git clone -q https://github.com/oblique/create_ap
-	chown -R $MPD_USER:$MPD_USER create_ap
+    git clone -q https://github.com/oblique/create_ap
+    chown -R $MPD_USER:$MPD_USER create_ap
 fi
 
 cd create_ap
@@ -24,21 +24,21 @@ input_box "Accesspoint - SSID" \
 SSID
 
 if [ -z "$SSID" ]; then
-	# user hit ESC/cancel
-	exit
+    # user hit ESC/cancel
+    exit
 fi
 
 while ! [[ "${#PASSPHRASE}" -ge 8 && "${#PASSPHRASE}" -le 63 ]]; do
-	SAMPLE_KEY=`pwgen 12 1`
-	input_box "Passphrase" \
-	"Enter wpa security key for your new $SSID - SSID" \
-	$SAMPLE_KEY \
-	PASSPHRASE
+    SAMPLE_KEY=`pwgen 12 1`
+    input_box "Passphrase" \
+    "Enter wpa security key for your new $SSID - SSID" \
+    $SAMPLE_KEY \
+    PASSPHRASE
 
-	if [ -z "$PASSPHRASE" ]; then
-		# user hit ESC/cancel
-		exit
-	fi
+    if [ -z "$PASSPHRASE" ]; then
+        # user hit ESC/cancel
+        exit
+    fi
 
 done
 
@@ -57,16 +57,16 @@ EOF
 
 cat > /usr/lib/systemd/system/create_ap.service << EOF;
 [Unit]
-	Description=carMPD AP Service
-	After=network.target
+    Description=carMPD AP Service
+    After=network.target
 
 [Service]
-	Type=simple
-	EnvironmentFile=$CREATEAP_ENV_FILE
-	ExecStart=/usr/bin/create_ap -n -g \$GATEWAY \$DEV \$SSID \$PASSPHRASE
-	KillSignal=SIGINT
-	Restart=on-failure
-	RestartSec=5
+    Type=simple
+    EnvironmentFile=$CREATEAP_ENV_FILE
+    ExecStart=/usr/bin/create_ap -n -g \$GATEWAY \$DEV \$SSID \$PASSPHRASE
+    KillSignal=SIGINT
+    Restart=on-failure
+    RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
