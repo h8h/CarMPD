@@ -54,6 +54,6 @@ EOF
 
 fi
 
-log_exec echo "--------- END YMPD installation process ---------"
+log_exec echo "--------- END   YMPD installation process ---------"
 
 cd $WORKING_DIR

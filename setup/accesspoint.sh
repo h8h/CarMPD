@@ -77,6 +77,6 @@ EOF
 systemctl enable create_ap.service
 log_exec systemctl start  create_ap.service
 
-log_exec echo "--------- END Accesspoint installation process ---------"
+log_exec echo "--------- END   Accesspoint installation process ---------"
 
 cd $WORKING_DIR

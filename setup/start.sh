@@ -29,7 +29,7 @@ if [ ! -d "/home/$MPD_USER/" ]; then
 fi
 
 # Creates the installation log
-touch $INSTALL_LOG_FILE
+touch $INSTALLATION_LOG_FILE
 
 # Setup the general carMPD configs folder
 mkdir --parents .config/carMPD

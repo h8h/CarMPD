@@ -1,5 +1,6 @@
 # Setup MPD 
 log_exec echo "--------- BEGIN MPD installation process ---------"
+
 log_exec pac_man mpd mpc udevil
 
 systemctl enable "devmon@$MPD_USER.service"
@@ -23,5 +24,6 @@ log_exec systemctl start  mpd.service
 
 log_exec mpc update
 
-log_exec echo "--------- END MPD installation process ---------"
+log_exec echo "--------- END   MPD installation process ---------"
+
 cd $WORKING_DIR
