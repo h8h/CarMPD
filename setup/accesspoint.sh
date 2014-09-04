@@ -1,8 +1,8 @@
 # Setup Github:oblique:create_ap 
-cd /home/$mpduser 
-wlan_dev=$1
+cd /home/$MPD_USER
+DEV=$1
 
-if [ -z "wlan_dev" ]; then
+if [ -z "$DEV" ]; then
 	# no ap-supported network device
 	exit
 fi
@@ -12,10 +12,11 @@ pac_man make dnsmasq hostapd haveged
 # Build create_ap
 if [ ! -d create_ap ]; then
 	git clone -q https://github.com/oblique/create_ap
-	chown -R $mpduser:$mpduser create_ap
-	cd create_ap
-	make install
+	chown -R $MPD_USER:$MPD_USER create_ap
 fi
+
+cd create_ap
+make install
 
 input_box "Accesspoint - SSID" \
 "Name your Accesspoint (SSID)" \
@@ -27,21 +28,32 @@ if [ -z "$SSID" ]; then
 	exit
 fi
 
-pass_phrase=""
-
-while ! [[ "${#pass_phrase}" -ge 8 && "${#pass_phrase}" -le 63 ]]; do
-	sample_key=`pwgen 12 1`
+while ! [[ "${#PASSPHRASE}" -ge 8 && "${#PASSPHRASE}" -le 63 ]]; do
+	SAMPLE_KEY=`pwgen 12 1`
 	input_box "Passphrase" \
 	"Enter wpa security key for your new $SSID - SSID" \
-	$sample_key \
-	pass_phrase
+	$SAMPLE_KEY \
+	PASSPHRASE
 
-	if [ -z "$pass_phrase" ]; then
+	if [ -z "$PASSPHRASE" ]; then
 		# user hit ESC/cancel
 		exit
 	fi
 
 done
+
+CREATEAP_ENV_FILE=/home/$MPD_USER/.config/carMPD/create_ap.env
+
+cat > $CREATEAP_ENV_FILE << EOF;
+# Accesspoint configuration file
+# Remember to restart the service if you change something
+# systemctl restart create_ap.service
+# Have a nice ♪ day :)
+DEV=$DEV
+SSID=$SSID
+PASSPHRASE=$PASSPHRASE
+GATEWAY=10.0.0.1
+EOF
 
 cat > /usr/lib/systemd/system/create_ap.service << EOF;
 [Unit]
@@ -50,7 +62,8 @@ cat > /usr/lib/systemd/system/create_ap.service << EOF;
 
 [Service]
 	Type=simple
-	ExecStart=/usr/bin/create_ap -n -g 10.0.0.1 $wlan_dev $SSID $pass_phrase
+	EnvironmentFile=$CREATEAP_ENV_FILE
+	ExecStart=/usr/bin/create_ap -n -g \$GATEWAY \$DEV \$SSID \$PASSPHRASE
 	KillSignal=SIGINT
 	Restart=on-failure
 	RestartSec=5
@@ -62,4 +75,4 @@ EOF
 systemctl enable create_ap.service
 systemctl start  create_ap.service
 
-cd $working_dir
+cd $WORKING_DIR

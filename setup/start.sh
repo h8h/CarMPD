@@ -13,44 +13,40 @@ fi
 # First of all install `dialog` to ask the user questions even if stdin has been redirected,
 # e.g. if we piped a bootstrapping install script to bash to get started.
 # Furthermore install the mpd server.
-pac_man dialog mpd
+pac_man dialog
 
-# Creates the mpd main user and its storage root to place all config files
-useradd --user-group --create-home $mpduser
-
-if [ ! -d "/home/$mpduser/" ]; then
-	message_box "Error creating new user" \
-"The user $mpduser wasn't created"
-	exit
-fi
-
-message_box "CarMPD Installation" \
+message_box "Welcome" \
 "Hello and thanks for using carMPD\n
 Let's go!"
 
+# Creates the mpd main user and its storage root to place all config files
+useradd --user-group --create-home $MPD_USER
+gpasswd -a $MPD_USER audio power
+
+if [ ! -d "/home/$MPD_USER/" ]; then
+	message_box "Error creating new user" \
+"The user $MPD_USER couldn't be created"
+	exit
+fi
+
+# Setup the general carMPD configs folder
+mkdir --parents .config/carMPD
+
+# Install MPD
 . setup/mpd.sh
 
+get_systemd_status mpd
+
+# Install Accesspoint 
 ask_box "Accesspoint" \
-"Would you like to use a wireless accesspoint?\n\n
+"Should I install a wireless accesspoint for you?\n\n
 Yes? Please plug-in your dongle and enter <Yes>" \
 AP
 
-# Check if the dongle supports AP
 if [ $AP -eq 0 ]; then
     pac_man pwgen iw
 
-    # Get all wireless network devices
-    devs=`iw dev | sed -n "s/^\t*Interface[[:space:]]\(w.*\)/\1/p"`
-    supported_devs=""
-	
-	for dev in `echo $devs`; do
-		wiphy=`iw $dev info | sed -n "s/^\t*wiphy[[:space:]]\([0-9]*\)$/\1/p"`
-		ap_support=`iw phy\#$wiphy info | grep "\* AP$"`
-		
-		if [ -n "$ap_support" ]; then
-			supported_devs="$supported_devs$dev - off\\ "
-		fi
-	done
+ 	get_supported_devices supported_devs
 
 	if [ -z "$supported_devs" ]; then
 		message_box "Can't install Accesspoint" \
@@ -60,10 +56,20 @@ if [ $AP -eq 0 ]; then
 		"Please select a network device\n
 you would like to use as an Accesspoint" \
 		"$supported_devs" \
-		selected_dev
+		SELECTED_DEV
 
-		. setup/accesspoint.sh $selected_dev
-		. setup/ympd.sh
-
+		. setup/accesspoint.sh $SELECTED_DEV
+		get_systemd_status create_ap
 	fi
+fi
+
+# Install MPD Web GUI
+ask_box "Web GUI" \
+"Should I install ympd for you?\n\n
+ympd is a standalone MPD Web GUI written in C, utilizing Websockets and Bootstrap/JS" \
+WEB_GUI
+
+if [ $WEB_GUI -eq 0 ]; then
+	. setup/ympd.sh
+	get_systemd_status ympd
 fi

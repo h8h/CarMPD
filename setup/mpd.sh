@@ -1,22 +1,25 @@
 # Setup MPD 
-cd /home/$mpduser
+pac_man mpd mpc udevil
 
-mkdir music
-echo "/mnt/music /home/$mpduser/music none bind" >> /etc/fstab
+systemctl enable "devmon@$MPD_USER.service"
+systemctl start  "devmon@$MPD_USER.service"
 
-chmod u+x -R /mnt/music
+cd /home/$MPD_USER
+mkdir --parents music/{internal,media}
+mkdir --parents .config/mpd/playlists
+chown -R $MPD_USER:$MPD_USER .config/mpd
 
+echo "/run/media/$MPD_USER /home/$MPD_USER/music/media none bind" >> /etc/fstab
 mount -a
 
-mkdir --parents .config/mpd/playlists
-chown -R $mpduser:$mpduser .config/mpd
-
 # Change mpd user
-sed -i "s/\${MPDUSR}/$mpduser/g" $working_dir/conf/mpd.conf
+sed -i "s/\${MPDUSR}/$MPD_USER/g" $WORKING_DIR/conf/mpd.conf
 
-cp $working_dir/conf/mpd.conf .config/mpd/mpd.conf
+cp $WORKING_DIR/conf/mpd.conf .config/mpd/mpd.conf
 
 systemctl enable mpd.service
 systemctl start  mpd.service
 
-cd $working_dir
+mpc update
+
+cd $WORKING_DIR
