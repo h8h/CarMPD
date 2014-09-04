@@ -16,6 +16,8 @@ mount -a
 
 # Change mpd user
 sed -i "s/\${MPDUSR}/$MPD_USER/g" $WORKING_DIR/conf/mpd.conf
+sed -i "s/\${CONFIG_FOLDER}/$CONFIG_FOLDER/g" $WORKING_DIR/conf/mpd.conf
+
 cp $WORKING_DIR/conf/mpd.conf $CONFIG_FOLDER/mpd.conf
 
 # Append the mpd config file to the mpd process
