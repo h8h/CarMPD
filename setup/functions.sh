@@ -89,17 +89,17 @@ function get_systemd_status {
 }
 
 function log_exec {
-    "$@" > >(tee $INSTALLATION_LOG_FILE.info) 2> >(tee $INSTALLATION_LOG_FILE.err >&2)
+    "$@" > >(tee -a $INSTALLATION_LOG_FILE.info) 2> >(tee -a $INSTALLATION_LOG_FILE.err >&2)
 }
 
 function begin_section {
     OUT="--------- BEGIN $1 installation process ---------"
     echo $OUT >> $INSTALLATION_LOG_FILE.info
-    echo $OUT 1>&2 2> $INSTALLATION_LOG_FILE.err
+    echo $OUT >> $INSTALLATION_LOG_FILE.err
 }
 
 function end_section {
     OUT="--------- END   $1 installation process ---------"
     echo $OUT >> $INSTALLATION_LOG_FILE.info
-    echo $OUT 1>&2 2> $INSTALLATION_LOG_FILE.err
+    echo $OUT >> $INSTALLATION_LOG_FILE.err
 }

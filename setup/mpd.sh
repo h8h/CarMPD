@@ -19,7 +19,7 @@ sed -i "s/\${MPDUSR}/$MPD_USER/g" $WORKING_DIR/conf/mpd.conf
 cp $WORKING_DIR/conf/mpd.conf $CONFIG_FOLDER/mpd.conf
 
 # Append the mpd config file to the mpd process
-sed "/^ExecStart/ s|$| $CONFIG_FOLDER/mpd.conf|" /usr/lib/systemd/system/mpd.service
+sed -i "/^ExecStart/ s|$| $CONFIG_FOLDER/mpd.conf|" /usr/lib/systemd/system/mpd.service
 
 systemctl          enable mpd.service
 log_exec systemctl start  mpd.service
