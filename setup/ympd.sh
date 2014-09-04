@@ -27,15 +27,15 @@ log_exec as_user "make"
 make install 
 cd ..
 
-YMPD_ENV_FILE=/home/$MPD_USER/.config/ympd.env
+YMPD_ENV_FILE=$CONFIG_FOLDER/ympd.env
 YMPD_SERVICE=contrib/ympd.service
 
 if [ -e "$YMPD_SERVICE" ]; then
-    cat > $YMPD_ENV << EOF;
-    # YMPD configuration file
-    # Remember to restart the service if you change something
-    # systemctl restart ympd.service
-    # Have a nice ♪ day :)
+    cat > $YMPD_ENV_FILE << EOF;
+# YMPD configuration file
+# Remember to restart the service if you change something
+# systemctl restart ympd.service
+# Have a nice ♪ day :)
 MPD_HOST=localhost
 MPD_PORT=6600
 WEB_PORT=80
@@ -45,7 +45,7 @@ EOF
     sed -i "/^ExecStart/ s/$/ --user $MPD_USER/" $YMPD_SERVICE
     
     # Change the config file location
-    sed -i "s|^EnvironmentFile=.*$|EnvironmentFile=-$YMPD_ENV_FILE|" $YMPD_SERVICE
+    sed -i "s|^EnvironmentFile=.*$|EnvironmentFile=$YMPD_ENV_FILE|" $YMPD_SERVICE
 
     mv $YMPD_SERVICE /usr/lib/systemd/system
 

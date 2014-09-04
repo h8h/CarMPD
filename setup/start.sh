@@ -35,6 +35,7 @@ fi
 
 # Setup the general CarMPD configs folder
 mkdir --parents $CONFIG_FOLDER
+chown $MPD_USER:$MPD_USER $CONFIG_FOLDER
 
 # Install MPD
 . setup/mpd.sh
