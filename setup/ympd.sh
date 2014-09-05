@@ -51,7 +51,7 @@ EOF
 
     systemctl enable ympd.service
     log_exec systemctl start  ympd.service
-    get_systemd_status ympd
+    check_status ympd
 fi
 
 end_section YMPD

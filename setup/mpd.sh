@@ -13,22 +13,22 @@ mkdir --parents music/{internal,media}
 
 MOUNTPOINT_DEVMON="/run/media/$MPD_USER /home/$MPD_USER/music/media none bind"
 
-if [ -z '`grep "$MOUNTPOINT_DEVMON" /etc/fstab`' ]; then
+if [ -z "`grep "$MOUNTPOINT_DEVMON" /etc/fstab`" ]; then
 	echo MOUNTPOINT_DEVMON >> /etc/fstab
 fi
 
 mount -a
 
 # Change mpd user
-sed -i "s/\${MPDUSR}/$MPD_USER/g" $WORKING_DIR/conf/mpd.conf
-sed -i "s/\${CONFIG_FOLDER}/$CONFIG_FOLDER/g" $WORKING_DIR/conf/mpd.conf
+sed -i "s|\${MPDUSR}|$MPD_USER|g" $WORKING_DIR/conf/mpd.conf
+sed -i "s|\${CONFIG_FOLDER}|$CONFIG_FOLDER|g" $WORKING_DIR/conf/mpd.conf
 
 cp $WORKING_DIR/conf/mpd.conf $CONFIG_FOLDER/mpd.conf
 
 chown $MPD_USER:$MPD_USER $CONFIG_FOLDER/mpd.conf
 
 # Append the mpd config file to the mpd process if it doesn't exist 
-if [ -z '`grep "$CONFIG_FOLDER/mpd.conf" /usr/lib/systemd/system/mpd.service`' ]; then
+if [ -z "`grep "$CONFIG_FOLDER/mpd.conf" /usr/lib/systemd/system/mpd.service`" ]; then
 	sed -i "/^ExecStart/ s|$| $CONFIG_FOLDER/mpd.conf|" /usr/lib/systemd/system/mpd.service
 fi
 

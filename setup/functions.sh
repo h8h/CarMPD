@@ -111,7 +111,7 @@ function begin_section {
 function end_section {
     # end_section "section name" 
     # Closes a section named in the log files
-    OUT="--------- END   $1 installation process ---------\n\n"
+    OUT="--------- END   $1 installation process ---------"
     echo $OUT >> $INSTALLATION_LOG_FILE.info
     echo $OUT >> $INSTALLATION_LOG_FILE.err
 }

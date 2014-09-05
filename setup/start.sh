@@ -19,10 +19,6 @@ message_box "Welcome" \
 "Hello and thanks for using CarMPD\n
 Let's go!"
 
-# Creates the installation log
-touch $INSTALLATION_LOG_FILE.info
-touch $INSTALLATION_LOG_FILE.err
-
 # Creates the mpd main user and its storage root to place all config files
 log_exec useradd --user-group --create-home --groups power,audio $MPD_USER
 
@@ -31,7 +27,6 @@ if [ ! -d "/home/$MPD_USER/" ]; then
 "The user $MPD_USER couldn't be created"
     exit
 fi
-
 
 # Setup the general CarMPD configs folder
 mkdir --parents $CONFIG_FOLDER
