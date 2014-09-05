@@ -4,9 +4,6 @@ declare -r CAR_MPD="CarMPD"
 declare -r CONFIG_FOLDER="/home/$MPD_USER/.config/CarMPD"
 declare -r INSTALLATION_LOG_FILE="/home/$MPD_USER/CarMPD_install.log"
 
-function as_user {
-    su -c "$@" $MPD_USER
-}
 
 function pac_man {
     # Install all given packages via pacman
@@ -14,11 +11,13 @@ function pac_man {
 }
 
 function message_box {
-    ## Dialog Functions ##
+    # message_box "title" "prompt"
     dialog --backtitle "$CAR_MPD" --title "$1" --msgbox "$2" 0 0
 }
 
 function ask_box {
+    # as_box "title" "prompt" VARIABLE
+    # The user's decision will be stored in variable VARIABLE.
     declare -n result=$3
     dialog --backtitle "$CAR_MPD" --title "$1" --yesno "$2" 0 0
     result=$?
@@ -30,12 +29,12 @@ function input_box {
     # The exit code from dialog will be stored in VARIABLE_EXITCODE.
     declare -n result=$4
     declare -n result_code=$4_EXITCODE
-    result=$(dialog --stdout --title "$1" --inputbox "$2" 0 0 "$3")
+    result=$(dialog --backtitle "$CAR_MPD" --stdout --title "$1" --inputbox "$2" 0 0 "$3")
     result_code=$?
 }
 
 function input_radio {
-    # input_menu "title" "prompt" "tag item tag item" VARIABLE
+    # input_radio "title" "prompt" "key description flag\ key description flag" VARIABLE
     # The user's input will be stored in the variable VARIABLE.
     # The exit code from dialog will be stored in VARIABLE_EXITCODE.
     declare -n result=$4
@@ -72,15 +71,21 @@ function get_supported_devices {
     done
 }
 
-function get_systemd_status {
-    # get_systemd_status VARIABLE
-    # Checks the VARIABLE systemd status and informs the user whether the process is running
+function as_user {
+    # as_user "process"
+    # The given process will be executed with the default mpd user permissions
+    su -c "$@" $MPD_USER
+}
+
+function check_status {
+    # check_status "service name"
+    # Checks the systemd status of the given service and informs the user whether the process is running
     IS_RUNNING=`systemctl status $1 | grep "active (running)"`
 
     if [ -z "$IS_RUNNING" ]; then
         message_box "$1 - Failed" \
-    "\nSomething went wrong :("
-        systemctl status $1
+    "\nSomething went wrong :(\n
+Take a look at the log files $INSTALLATION_LOG_FILE.info or $INSTALLATION_LOG_FILE.err"
         exit
     else
         message_box "$1 - Success" \
@@ -89,17 +94,24 @@ function get_systemd_status {
 }
 
 function log_exec {
+    # log_exec "process"
+    # Executes the process and writes its output to 
+    # the stdout log file with appendix .info and to the stderr log file with appendix .err
     "$@" > >(tee -a $INSTALLATION_LOG_FILE.info) 2> >(tee -a $INSTALLATION_LOG_FILE.err >&2)
 }
 
 function begin_section {
+    # begin_section "section name"
+    # Starts a new section in the log files
     OUT="--------- BEGIN $1 installation process ---------"
     echo $OUT >> $INSTALLATION_LOG_FILE.info
     echo $OUT >> $INSTALLATION_LOG_FILE.err
 }
 
 function end_section {
-    OUT="--------- END   $1 installation process ---------"
+    # end_section "section name" 
+    # Closes a section named in the log files
+    OUT="--------- END   $1 installation process ---------\n\n"
     echo $OUT >> $INSTALLATION_LOG_FILE.info
     echo $OUT >> $INSTALLATION_LOG_FILE.err
 }

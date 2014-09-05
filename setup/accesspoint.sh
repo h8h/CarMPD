@@ -77,6 +77,8 @@ EOF
 systemctl enable create_ap.service
 log_exec systemctl start  create_ap.service
 
+check_status create_ap
+
 end_section Accesspoint
 
 cd $WORKING_DIR

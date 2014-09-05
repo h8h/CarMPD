@@ -40,8 +40,6 @@ chown $MPD_USER:$MPD_USER $CONFIG_FOLDER
 # Install MPD
 . setup/mpd.sh
 
-get_systemd_status mpd
-
 # Install Accesspoint 
 ask_box "Accesspoint" \
 "Should I install a wireless accesspoint for you?\n\n
@@ -64,7 +62,6 @@ you would like to use as an Accesspoint" \
         SELECTED_DEV
 
         . setup/accesspoint.sh $SELECTED_DEV
-        get_systemd_status create_ap
     fi
 fi
 
@@ -76,5 +73,4 @@ WEB_GUI
 
 if [ $WEB_GUI -eq 0 ]; then
     . setup/ympd.sh
-    get_systemd_status ympd
 fi

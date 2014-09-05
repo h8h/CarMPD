@@ -1,5 +1,5 @@
 # Setup Github:notandy:ympd
-cd /home/$MPD_USER/ 
+cd /home/$MPD_USER 
 
 if [ -z "$TAG" ]; then
     TAG=v1.2.2
@@ -51,7 +51,7 @@ EOF
 
     systemctl enable ympd.service
     log_exec systemctl start  ympd.service
-
+    get_systemd_status ympd
 fi
 
 end_section YMPD
