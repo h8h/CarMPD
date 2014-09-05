@@ -14,7 +14,7 @@ mkdir --parents music/{internal,media}
 MOUNTPOINT_DEVMON="/run/media/$MPD_USER /home/$MPD_USER/music/media none bind"
 
 if [ -z "`grep "$MOUNTPOINT_DEVMON" /etc/fstab`" ]; then
-	echo MOUNTPOINT_DEVMON >> /etc/fstab
+	echo "$MOUNTPOINT_DEVMON" >> /etc/fstab
 fi
 
 mount -a
